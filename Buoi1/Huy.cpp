@@ -9,21 +9,26 @@ typedef struct
     char hoTen[100];
     int Group_id;
 }thanhvien;
+
+//Ham nhap thong tin thanh vien
 void Nhap(thanhvien *tv)
 {
     printf("Nhap thong tin thanh vien\n");
-    printf("Nhap ho ten thanh vien.\n");
+    printf("Nhap ho ten thanh vien:\n");
     gets(tv->hoTen);
+    fflush(stdin);
     printf("Nhap MSSV:\n");
     scanf("%d",&tv->MSSV);
-    fflush(stdin);
+    //fflush(stdin);
     printf("Nhap ID:\n");
     scanf("%d",&tv->ID);
-    fflush(stdin);
+    //fflush(stdin);
     printf("Nhap Group_id:\n");
     scanf("%d",&tv->Group_id);
     fflush(stdin);
 }
+
+//Ham in thong tin thanh vien
 void In(thanhvien *tv)
 {
     printf("Ten thanh vien %s\n",tv->hoTen);
@@ -31,6 +36,8 @@ void In(thanhvien *tv)
     printf("Ma so sinh vien:%d\n",tv->MSSV);
     printf("Group_id:%d\n",tv->Group_id);
 }
+
+//Ham tim kiem thong tin thanh vien
 int Tim(thanhvien *tv,char hoten[],int size)
 {
     int dem=0;
@@ -38,27 +45,38 @@ int Tim(thanhvien *tv,char hoten[],int size)
     {
         tv=(tv+1);
         dem++;
+        if(dem>=size)
+        	return -1;
     }
     return dem;
 }
+
+//Ham xoa thanh vien
 void deltv(thanhvien *tv,int dem,int *size)
 {
     int i;
     thanhvien *p;
-    tv=tv+dem;
-    while(dem<(*size-1))
+    if(dem==-1)
+    	printf("Thanh vien nay khong co trong danh sach.\n");
+    else
     {
-        p=tv+1;
-        strcpy(tv->hoTen,p->hoTen);
-        tv->ID=p->ID;
-        tv->MSSV=p->MSSV;
-        tv->Group_id=p->Group_id;
-        tv=tv+1;
-        dem++;
-    }
+		tv=tv+dem;
+    	while(dem<(*size-1))
+   		{
+        	p=tv+1;
+        	strcpy(tv->hoTen,p->hoTen);
+        	tv->ID=p->ID;
+        	tv->MSSV=p->MSSV;
+        	tv->Group_id=p->Group_id;
+        	tv=tv+1;
+        	dem++;
+    	}
     tv=tv-(*size-1);
     *size=*size-1;
+	}
 }
+
+//Ham sua thanh vien
 void Suatv(thanhvien *tv,int dem,int size)
 {
     tv=tv+dem;
@@ -75,6 +93,8 @@ void Suatv(thanhvien *tv,int dem,int size)
     scanf("%d",&tv->Group_id);
     fflush(stdin);
 }
+
+//Ham them thanh vien
 void Themtv(thanhvien *tv,int *size)
 {
     Nhap(&tv[*size]);
@@ -98,7 +118,7 @@ int main()
     printf("\n4.Them thanh vien.\n");
     printf("\n5.Sua thong tin thanh vien:\n");
     printf("\n6.Xoa thanh vien.\n");
-
+	printf("\n7.Thoat chuong trinh.\n");
     while(i==1)
     {   printf("Nhap vao cac lua chon:\n");
         switch(getchar())
@@ -126,7 +146,10 @@ int main()
                 printf("Nhap vao ten thanh vien can tim thong tin:\n");
                 fflush(stdin);
                 gets(hoten);
-                In(&tv[Tim(tv,hoten,size)]);
+                if(Tim(tv,hoten,size)==-1)
+                	printf("Thanh vien khong co trong danh sach.\n");
+                else	
+                	In(&tv[Tim(tv,hoten,size)]);
             };break;
         case '4':
             {
@@ -139,7 +162,10 @@ int main()
                 printf("Nhap vao ten thanh vien can sua thong tin:\n");
                 fflush(stdin);
                 gets(hoten);
-                Suatv(tv,Tim(tv,hoten,size),size);
+                if(Tim(tv,hoten,size)==-1)
+                	printf("Thanh vien khong co trong danh sach.\n");
+                else
+                	Suatv(tv,Tim(tv,hoten,size),size);
             };break;
         case '6':
             {
@@ -148,13 +174,13 @@ int main()
                 gets(hoten);
                 deltv(tv,Tim(tv,hoten,size),&size);
             };break;
-        default:break;
+        case '7':
+        	{		
+				printf("Cam on cac ban da su dung chuong trinh.\n");
+				exit(1);
+        	}
+		default:break;
         };
-        printf("Nhap vao so 1 neu muon tiep tuc chuong trinh.\n");
-        scanf("%d",&i);
-        fflush(stdin);
-    }
-    printf("Cam on cac ban da su dung chuong trinh.\n");
-	return 0;
+	}
 }
 

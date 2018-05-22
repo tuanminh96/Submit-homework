@@ -6,7 +6,7 @@ typedef struct TTTV
 	char hoTen[50];
 	int ID;
 	int tuoi;
-	int nhom;
+	int nhom;     
 }TTTV;
 void nhapTT(TTTV *tv)
 {
@@ -81,5 +81,5 @@ int main()
 
 	}
 	
-	return 0;	
+	return 0;	//Sua tam ty
 }
